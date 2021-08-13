@@ -13,10 +13,10 @@ const {
 // /api/thoughts
 router.route("/").get(getAllThoughts).post(addThought);
 
-// api/thoughts/:id
+// /api/thoughts/:id
 router.route("/:id").get(getThoughtById).put(thoughtUpdate);
 
-// api/thoughts/:userId/:thoughtId
+// /api/thoughts/:userId/:thoughtId
 router.route("/:userId/:thoughtId").delete(removeThought);
 
 // /api/thoughts/:thoughtId/reactions
