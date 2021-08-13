@@ -25,7 +25,7 @@ const thoughtController = {
   },
 
   // add a thought to user
-  addThought({ params, body }, res) {
+  addThought({ body }, res) {
     console.log(body);
     Thought.create(body)
       .then(({ _id }) => {
@@ -38,6 +38,43 @@ const thoughtController = {
       .then((UserDb) => {
         if (!UserDb) {
           res.status(404).json({ message: "No users found with this id!" });
+          return;
+        }
+        res.json(UserDb);
+      })
+      .catch((err) => res.json(err));
+  },
+
+  // update a thought by id
+  thoughtUpdate({ params, body }, res) {
+    Thought.findOneAndUpdate({ _id: params.id }, body, { new: true })
+      .then((thoughtDb) => {
+        if (!thoughtDb) {
+          res.status(404).json({ message: "No thought found with this id!" });
+          return;
+        }
+        res.json(thoughtDb);
+      })
+      .catch((err) => res.json(err));
+  },
+
+  //  remove a thought
+
+  removeThought({ params }, res) {
+    Thought.findOneAndDelete({ _id: params.thoughtId })
+      .then((deletedThought) => {
+        if (!deletedThought) {
+          return res.status(404).json({ message: "No thought with this id!" });
+        }
+        return User.findOneAndUpdate(
+          { _id: params.userId },
+          { $pull: { thoughts: params.thoughtId } },
+          { new: true }
+        );
+      })
+      .then((UserDb) => {
+        if (!UserDb) {
+          res.status(404).json({ message: "No user found with this id!" });
           return;
         }
         res.json(UserDb);
@@ -62,28 +99,6 @@ const thoughtController = {
   //       .catch((err) => res.json(err));
   //   },
 
-  //   // remove comment
-  //   removeComment({ params }, res) {
-  //     Comment.findOneAndDelete({ _id: params.commentId })
-  //       .then((deletedComment) => {
-  //         if (!deletedComment) {
-  //           return res.status(404).json({ message: "No comment with this id!" });
-  //         }
-  //         return Pizza.findOneAndUpdate(
-  //           { _id: params.pizzaId },
-  //           { $pull: { comments: params.commentId } },
-  //           { new: true }
-  //         );
-  //       })
-  //       .then((dbPizzaData) => {
-  //         if (!dbPizzaData) {
-  //           res.status(404).json({ message: "No pizza found with this id!" });
-  //           return;
-  //         }
-  //         res.json(dbPizzaData);
-  //       })
-  //       .catch((err) => res.json(err));
-  //   },
   //   // remove reply
   //   removeReply({ params }, res) {
   //     Comment.findOneAndUpdate(
