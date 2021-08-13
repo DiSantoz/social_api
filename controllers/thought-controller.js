@@ -4,6 +4,7 @@ const thoughtController = {
   // get all thoughts
   getAllThoughts(req, res) {
     Thought.find({})
+      .select("-__v")
       .then((thoughtDb) => res.json(thoughtDb))
       .catch((err) => {
         console.log(err);
@@ -11,9 +12,10 @@ const thoughtController = {
       });
   },
 
-  // get thought user by id
+  // get thought by id
   getThoughtById({ params }, res) {
     Thought.findOne({ _id: params.id })
+      .select("-__v")
       .then((thoughtDb) => {
         if (!thoughtDb) {
           res.status(404).json({ message: "No thought found with this id!" });
@@ -48,6 +50,7 @@ const thoughtController = {
   // update a thought by id
   thoughtUpdate({ params, body }, res) {
     Thought.findOneAndUpdate({ _id: params.id }, body, { new: true })
+      .select("-__v")
       .then((thoughtDb) => {
         if (!thoughtDb) {
           res.status(404).json({ message: "No thought found with this id!" });
@@ -89,6 +92,7 @@ const thoughtController = {
       { $push: { reactions: body } },
       { new: true }
     )
+      .select("-__v")
       .then((thoughtDb) => {
         if (!thoughtDb) {
           res.status(404).json({ message: "No pizza found with this id!" });
