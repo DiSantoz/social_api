@@ -59,6 +59,33 @@ const userController = {
       .then((UserDb) => res.json(UserDb))
       .catch((err) => res.json(err));
   },
-};
 
+  // add a new friend to user's friend list
+  addFriend({ params }, res) {
+    User.findOneAndUpdate(
+      { _id: params.userId },
+      { $push: { friends: params.friendId } },
+      { new: true }
+    )
+      .then((UserDb) => {
+        if (!UserDb) {
+          res.status(404).json({ message: "No friend found with this id!" });
+          return;
+        }
+        res.json(UserDb);
+      })
+      .catch((err) => res.json(err));
+  },
+
+  // remove a friend from friend list
+  removeFriend({ params }, res) {
+    User.findOneAndUpdate(
+      { _id: params.userId },
+      { $pull: { friends: params.friendId } },
+      { new: true }
+    )
+      .then((UserDb) => res.json(UserDb))
+      .catch((err) => res.json(err));
+  },
+};
 module.exports = userController;
