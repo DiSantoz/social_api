@@ -30,7 +30,7 @@ A NoSQL database API for a social networking website, that allows for users to b
 
 ## Usage
 
-Please see attached [video](https://drive.google.com/file/d/11EyhQ47omZYmpV1E1M01oW9PHqy3B8t3/view) on how to use this application!
+Please see attached [video](https://drive.google.com/file/d/1GalB84Hw_IdxY41qrWWiN8VfgnfDWIEd/view?usp=sharing) on how to use this application!
 
 Open Insomnia Core and test the various routes:
 
